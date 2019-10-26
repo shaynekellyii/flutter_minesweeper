@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text('Minesweeper')),
+        appBar: AppBar(
+          title: Text('Minesweeper'),
+          centerTitle: true,
+        ),
         body: MinesweeperScreen(),
       ),
     );
@@ -26,13 +29,17 @@ class MinesweeperScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          ChangeNotifierProvider.value(
-            value: GameModel(),
-            child: MinesweeperBoard(),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(top: 32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            ChangeNotifierProvider.value(
+              value: GameModel(),
+              child: MinesweeperBoard(),
+            ),
+          ],
+        ),
       ),
     );
   }

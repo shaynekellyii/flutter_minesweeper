@@ -77,6 +77,8 @@ class GameModel with ChangeNotifier {
   void onFlagged(int x, int y) {
     final tile = tiles[x][y];
 
+    if (tile.isPressed) return;
+    
     if (tile.isFlagged) {
       _flagged--;
       if (!tile.isMine) _improperlyFlagged--;
@@ -103,6 +105,7 @@ class GameModel with ChangeNotifier {
     _hasWon = false;
     _hasLost = false;
     
+    tiles.clear();
     _generateTiles();
   }
 
