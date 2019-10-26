@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
 
@@ -16,7 +15,7 @@ class MinesweeperHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           MineCounter(count: model.minesRemaining),
-          NewGameButton(),
+          NewGameButton(onTap: model.restart),
           MineCounter(count: model.flagsPlaced),
         ],
       ),
@@ -52,15 +51,24 @@ class MineCounter extends StatelessWidget {
 }
 
 class NewGameButton extends StatelessWidget {
+  const NewGameButton({Key key, @required this.onTap})
+      : assert(onTap != null),
+        super(key: key);
+
+  final Function() onTap;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 40.0,
-        height: 40.0,
-        color: Colors.grey[500],
-        child: Center(child: Text(':)')),
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 40.0,
+          height: 40.0,
+          color: Colors.grey[500],
+          child: Center(child: Text(':)')),
+        ),
       ),
     );
   }

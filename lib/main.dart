@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Minesweeper',
       theme: ThemeData(
+        fontFamily: 'Dosis',
         primarySwatch: Colors.grey,
       ),
       home: Scaffold(

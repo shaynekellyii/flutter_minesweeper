@@ -94,6 +94,18 @@ class GameModel with ChangeNotifier {
     notifyListeners();
   }
 
+  ///
+  /// Resets the game to initial conditions.
+  ///
+  void restart() {
+    _flagged = 0;
+    _improperlyFlagged = 0;
+    _hasWon = false;
+    _hasLost = false;
+    
+    _generateTiles();
+  }
+
   int _getNumAdjacentMines(int x, int y) {
     int adjacent = 0;
     directions.forEach((List<int> dir) {
