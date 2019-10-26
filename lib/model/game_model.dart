@@ -64,6 +64,9 @@ class GameModel with ChangeNotifier {
     } else {
       tile.isPressed = true;
       tile.adjacentMines = _getNumAdjacentMines(x, y);
+      if (tile.adjacentMines == 0) {
+        _visitAllAdjacentMines(x, y);
+      }
     }
     notifyListeners();
   }
@@ -73,16 +76,24 @@ class GameModel with ChangeNotifier {
     directions.forEach((List<int> dir) {
       final newX = x + dir[0];
       final newY = y + dir[1];
-      if (newX >= 0 &&
-          newX < rows &&
-          newY >= 0 &&
-          newY < cols &&
-          tiles[newX][newY].isMine) {
+      if (_isInBounds(newX, newY) && tiles[newX][newY].isMine) {
         adjacent++;
       }
     });
     return adjacent;
   }
+
+  void _visitAllAdjacentMines(int x, int y) {
+    directions.forEach((List<int> dir) {
+      final newX = x + dir[0];
+      final newY = y + dir[1];
+      if (_isInBounds(newX, newY)) {
+        onPressed(newX, newY);
+      }
+    });
+  }
+
+  bool _isInBounds(int x, int y) => x >= 0 && x < rows && y >= 0 && y < cols;
 
   void _generateTiles() {
     final List<Set> mines = List.generate(_rows, (_) => <int>{});
