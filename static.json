@@ -1,3 +1,8 @@
 {
-  "root": "build/web"
+  "root": "build/web",
+  "routes": {
+    "/**": "index.html"
+  },
+  "clean_urls": false,
+  "error_page": "index.html"
 }
