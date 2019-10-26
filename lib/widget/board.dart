@@ -16,7 +16,7 @@ class MinesweeperBoard extends StatelessWidget {
               border: Border.all(color: Colors.grey[300], width: 8.0)),
           child: Column(
             children: <Widget>[
-              MinesweeperHeader(),
+              MinesweeperHeader(model: model),
               MinesweeperGrid(model: model),
               if (model.hasLost) Text('You lost!'),
               if (model.hasWon) Text('You won!'),
@@ -69,7 +69,13 @@ class Tile extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
     if (model.isPressed) {
-      child = Text(model.isMine ? 'M' : '0');
+      if (model.isMine) {
+        child = Text('M');
+      } else {
+        child = model.adjacentMines > 0
+            ? Text('${model.adjacentMines}')
+            : Container();
+      }
     } else if (model.isFlagged) {
       child = Text('F');
     } else {

@@ -1,7 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/model/game_model.dart';
 
 class MinesweeperHeader extends StatelessWidget {
+  const MinesweeperHeader({Key key, this.model}) : super(key: key);
+
+  final GameModel model;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,9 +15,9 @@ class MinesweeperHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          MineCounter(count: 99),
+          MineCounter(count: model.minesRemaining),
           NewGameButton(),
-          MineCounter(count: 0),
+          MineCounter(count: model.flagsPlaced),
         ],
       ),
     );

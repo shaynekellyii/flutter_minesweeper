@@ -2,6 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+// Breadth first search directions
+const List<List<int>> directions = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1],
+];
+
 class GameModel with ChangeNotifier {
   GameModel() {
     _generateTiles();
@@ -51,8 +63,25 @@ class GameModel with ChangeNotifier {
       tile.isPressed = true;
     } else {
       tile.isPressed = true;
+      tile.adjacentMines = _getNumAdjacentMines(x, y);
     }
     notifyListeners();
+  }
+
+  int _getNumAdjacentMines(int x, int y) {
+    int adjacent = 0;
+    directions.forEach((List<int> dir) {
+      final newX = x + dir[0];
+      final newY = y + dir[1];
+      if (newX >= 0 &&
+          newX < rows &&
+          newY >= 0 &&
+          newY < cols &&
+          tiles[newX][newY].isMine) {
+        adjacent++;
+      }
+    });
+    return adjacent;
   }
 
   void _generateTiles() {
@@ -89,10 +118,12 @@ class TileModel {
   bool isPressed;
   bool isFlagged;
   bool isMine;
+  int adjacentMines = 0;
 
   TileModel({
     @required this.isPressed,
     @required this.isFlagged,
     @required this.isMine,
+    this.adjacentMines,
   });
 }
