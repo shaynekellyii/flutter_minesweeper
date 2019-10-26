@@ -50,6 +50,7 @@ class MinesweeperGrid extends StatelessWidget {
           return Tile(
             model: model.tiles[x][y],
             onClick: () => model.onPressed(x, y),
+            onLongPress: () => model.onFlagged(x, y),
           );
         }),
       ),
@@ -58,12 +59,17 @@ class MinesweeperGrid extends StatelessWidget {
 }
 
 class Tile extends StatelessWidget {
-  const Tile({Key key, @required this.model, @required this.onClick})
-      : assert(model != null && onClick != null),
+  const Tile({
+    Key key,
+    @required this.model,
+    @required this.onClick,
+    @required this.onLongPress,
+  })  : assert(model != null && onClick != null && onLongPress != null),
         super(key: key);
 
   final TileModel model;
   final Function() onClick;
+  final Function() onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +90,7 @@ class Tile extends StatelessWidget {
 
     return GestureDetector(
       onTap: onClick,
+      onLongPress: onLongPress,
       child: Container(
         height: 24.0,
         width: 24.0,

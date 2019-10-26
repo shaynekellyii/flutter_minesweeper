@@ -56,7 +56,7 @@ class GameModel with ChangeNotifier {
   void onPressed(int x, int y) {
     final tile = tiles[x][y];
 
-    if (tile.isPressed) {
+    if (tile.isPressed || tile.isFlagged) {
       return;
     } else if (tile.isMine) {
       _hasLost = true;
@@ -68,6 +68,29 @@ class GameModel with ChangeNotifier {
         _visitAllAdjacentMines(x, y);
       }
     }
+    notifyListeners();
+  }
+
+  ///
+  /// Updates the state after marking a tile as flagged.
+  ///
+  void onFlagged(int x, int y) {
+    final tile = tiles[x][y];
+
+    if (tile.isFlagged) {
+      _flagged--;
+      if (!tile.isMine) _improperlyFlagged--;
+    } else {
+      _flagged++;
+      if (!tile.isMine) _improperlyFlagged++;
+    }
+    tile.isFlagged = !tile.isFlagged;
+
+    // Check for winner
+    if (_improperlyFlagged == 0 && _flagged == _mines) {
+      _hasWon = true;
+    }
+
     notifyListeners();
   }
 
