@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/model/game_model.dart';
 import 'package:flutter_minesweeper/widget/board.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +27,10 @@ class MinesweeperScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          MinesweeperBoard(),
+          ChangeNotifierProvider.value(
+            value: GameModel(),
+            child: MinesweeperBoard(),
+          ),
         ],
       ),
     );

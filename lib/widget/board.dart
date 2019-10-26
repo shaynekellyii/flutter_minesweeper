@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/model/game_model.dart';
 import 'package:flutter_minesweeper/widget/header.dart';
+import 'package:provider/provider.dart';
 
 class MinesweeperBoard extends StatelessWidget {
   @override
@@ -28,43 +30,35 @@ class MinesweeperBoard extends StatelessWidget {
 class MinesweeperGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 24.0 * 9.0,
-      width: 24.0 * 9.0,
-      child: GridView.count(
-        crossAxisCount: 9,
-        physics: NeverScrollableScrollPhysics(),
-        children: List.generate(9 * 9, (i) {
-          return Tile(
-            isFlagged: i % 2 == 0,
-            isRevealed: i % 1 == 1,
-            value: i % 4,
-          );
-        }),
+    return Consumer<GameModel>(
+      builder: (context, model, child) => Container(
+        height: 24.0 * model.rows,
+        width: 24.0 * model.cols,
+        child: GridView.count(
+          crossAxisCount: model.cols,
+          physics: NeverScrollableScrollPhysics(),
+          children: List.generate(model.tiles.length, (i) {
+            return Tile(model: model.tiles[i]);
+          }),
+        ),
       ),
     );
   }
 }
 
 class Tile extends StatelessWidget {
-  const Tile({
-    Key key,
-    @required this.value,
-    @required this.isRevealed,
-    @required this.isFlagged,
-  })  : assert(value != null && isRevealed != null && isFlagged != null),
+  const Tile({Key key, @required this.model})
+      : assert(model != null),
         super(key: key);
 
-  final int value;
-  final bool isRevealed;
-  final bool isFlagged;
+  final TileModel model;
 
   @override
   Widget build(BuildContext context) {
     Widget child;
-    if (isRevealed && value > 0) {
-      child = Text('$value');
-    } else if (isFlagged) {
+    if (model.isPressed) {
+      child = Text('R');
+    } else if (model.isFlagged) {
       child = Text('F');
     } else {
       child = Container();
@@ -74,7 +68,7 @@ class Tile extends StatelessWidget {
       height: 24.0,
       width: 24.0,
       decoration: BoxDecoration(
-        color: isRevealed ? Colors.grey[200] : Colors.grey[300],
+        color: model.isPressed ? Colors.grey[200] : Colors.grey[300],
         border: Border.all(color: Colors.black, width: 2.0),
       ),
       child: Center(child: child),
