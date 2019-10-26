@@ -6,18 +6,22 @@ import 'package:provider/provider.dart';
 class MinesweeperBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 300,
-        height: 300,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[300], width: 8.0)),
-        child: Column(
-          children: <Widget>[
-            MinesweeperHeader(),
-            MinesweeperGrid(),
-          ],
+    return Consumer<GameModel>(
+      builder: (context, model, child) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 300,
+          height: 300,
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[300], width: 8.0)),
+          child: Column(
+            children: <Widget>[
+              MinesweeperHeader(),
+              MinesweeperGrid(model: model),
+              if (model.hasLost) Text('You lost!'),
+              if (model.hasWon) Text('You won!'),
+            ],
+          ),
         ),
       ),
     );
@@ -28,30 +32,38 @@ class MinesweeperBoard extends StatelessWidget {
 /// Beginner: 9x9, 10 mines
 ///
 class MinesweeperGrid extends StatelessWidget {
+  const MinesweeperGrid({Key key, @required this.model}) : super(key: key);
+
+  final GameModel model;
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<GameModel>(
-      builder: (context, model, child) => Container(
-        height: 24.0 * model.rows,
-        width: 24.0 * model.cols,
-        child: GridView.count(
-          crossAxisCount: model.cols,
-          physics: NeverScrollableScrollPhysics(),
-          children: List.generate(model.tiles.length, (i) {
-            return Tile(model: model.tiles[i]);
-          }),
-        ),
+    return Container(
+      height: 24.0 * model.rows,
+      width: 24.0 * model.cols,
+      child: GridView.count(
+        crossAxisCount: model.cols,
+        physics: NeverScrollableScrollPhysics(),
+        children: List.generate(model.rows * model.cols, (i) {
+          final x = i ~/ model.rows;
+          final y = i % model.rows;
+          return Tile(
+            model: model.tiles[x][y],
+            onClick: () => model.onPressed(x, y),
+          );
+        }),
       ),
     );
   }
 }
 
 class Tile extends StatelessWidget {
-  const Tile({Key key, @required this.model})
-      : assert(model != null),
+  const Tile({Key key, @required this.model, @required this.onClick})
+      : assert(model != null && onClick != null),
         super(key: key);
 
   final TileModel model;
+  final Function() onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +76,17 @@ class Tile extends StatelessWidget {
       child = Container();
     }
 
-    return Container(
-      height: 24.0,
-      width: 24.0,
-      decoration: BoxDecoration(
-        color: model.isPressed ? Colors.grey[200] : Colors.grey[300],
-        border: Border.all(color: Colors.black, width: 2.0),
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        height: 24.0,
+        width: 24.0,
+        decoration: BoxDecoration(
+          color: model.isPressed ? Colors.grey[200] : Colors.grey[300],
+          border: Border.all(color: Colors.black, width: 2.0),
+        ),
+        child: Center(child: child),
       ),
-      child: Center(child: child),
     );
   }
 }

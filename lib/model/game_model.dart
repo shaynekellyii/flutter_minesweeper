@@ -14,10 +14,14 @@ class GameModel with ChangeNotifier {
   int _rows = 9;
   int _cols = 9;
   int _mines = 10;
+
   int _flagged = 0;
   int _improperlyFlagged = 0;
 
-  List<TileModel> tiles = [];
+  bool _hasWon = false;
+  bool _hasLost = false;
+
+  List<List<TileModel>> tiles = <List<TileModel>>[];
 
   int get rows => _rows;
   int get cols => _cols;
@@ -31,28 +35,46 @@ class GameModel with ChangeNotifier {
   /// Number of flags placed
   int get flagsPlaced => _flagged;
 
+  bool get hasWon => _hasWon;
+  bool get hasLost => _hasLost;
+
   ///
   /// Recalculate state when a tile is pressed.
   ///
-  void onPressed(int index) {
-    
+  void onPressed(int x, int y) {
+    final tile = tiles[x][y];
+    if (tile.isMine) {
+      _hasLost = true;
+    }
+    notifyListeners();
   }
 
   void _generateTiles() {
-    final mines = <int>{};
+    final List<Set> mines = List.generate(_rows, (_) => <int>{});
     final rand = Random();
-    while (mines.length < _mines) {
-      mines.add(rand.nextInt(_rows * _cols));
+
+    var numMines = 0;
+    while (numMines < _mines) {
+      int x = rand.nextInt(_rows);
+      int y = rand.nextInt(_cols);
+      if (!mines[x].contains(y)) {
+        mines[x].add(y);
+        numMines++;
+      }
     }
 
     tiles = List.generate(
-      9 * 9,
-      (index) => TileModel(
-        isFlagged: false,
-        isPressed: false,
-        isMine: mines.contains(index),
+      _rows,
+      (x) => List.generate(
+        _cols,
+        (y) => TileModel(
+          isPressed: false,
+          isMine: mines[x].contains(y),
+          isFlagged: false,
+        ),
       ),
     );
+    notifyListeners();
   }
 }
 
