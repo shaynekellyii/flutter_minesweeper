@@ -43,17 +43,24 @@ class GameModel with ChangeNotifier {
   ///
   void onPressed(int x, int y) {
     final tile = tiles[x][y];
-    if (tile.isMine) {
+
+    if (tile.isPressed) {
+      return;
+    } else if (tile.isMine) {
       _hasLost = true;
+      tile.isPressed = true;
+    } else {
+      tile.isPressed = true;
     }
     notifyListeners();
   }
 
   void _generateTiles() {
     final List<Set> mines = List.generate(_rows, (_) => <int>{});
-    final rand = Random();
 
+    // Place mines randomly
     var numMines = 0;
+    final rand = Random();
     while (numMines < _mines) {
       int x = rand.nextInt(_rows);
       int y = rand.nextInt(_cols);

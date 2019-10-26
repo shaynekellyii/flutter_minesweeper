@@ -69,7 +69,7 @@ class Tile extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
     if (model.isPressed) {
-      child = Text('R');
+      child = Text(model.isMine ? 'M' : '0');
     } else if (model.isFlagged) {
       child = Text('F');
     } else {
@@ -82,7 +82,7 @@ class Tile extends StatelessWidget {
         height: 24.0,
         width: 24.0,
         decoration: BoxDecoration(
-          color: model.isPressed ? Colors.grey[200] : Colors.grey[300],
+          color: model.isPressed ? Colors.grey[200] : Colors.grey[400],
           border: Border.all(color: Colors.black, width: 2.0),
         ),
         child: Center(child: child),
