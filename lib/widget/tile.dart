@@ -23,21 +23,6 @@ class _TileState extends State<Tile> {
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
-    if (widget.model.isPressed) {
-      if (widget.model.isMine) {
-        child = Text('M');
-      } else {
-        child = widget.model.adjacentMines > 0
-            ? Text('${widget.model.adjacentMines}')
-            : Container();
-      }
-    } else if (widget.model.isFlagged) {
-      child = Text('F');
-    } else {
-      child = Container();
-    }
-
     return Container(
       margin: EdgeInsets.all(2.0),
       child: MouseRegion(
@@ -49,18 +34,51 @@ class _TileState extends State<Tile> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4.0),
             child: Material(
-              color: widget.model.isPressed || _isHovering
-                  ? Colors.grey[300]
-                  : Colors.grey[400],
+              color: _getBackgroundColor(),
               child: SizedBox(
                 height: 24.0,
                 width: 24.0,
-                child: Center(child: child),
+                child: Center(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) =>
+                        _getTileContent(constraints),
+                  ),
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _getTileContent(BoxConstraints constraints) {
+    final iconSize = constraints.biggest.height - 1.0;
+    Widget child;
+
+    if (widget.model.isPressed) {
+      if (widget.model.isMine) {
+        child = Icon(Icons.warning, size: iconSize);
+      } else {
+        child = widget.model.adjacentMines > 0
+            ? Text('${widget.model.adjacentMines}')
+            : Container();
+      }
+    } else if (widget.model.isFlagged) {
+      child = Icon(Icons.flag, color: Colors.red, size: iconSize);
+    } else {
+      child = Container();
+    }
+    return child;
+  }
+
+  Color _getBackgroundColor() {
+    bool isExploded = widget.model.isPressed && widget.model.isMine;
+    if (isExploded) return Colors.red;
+
+    bool isLighter = widget.model.isPressed || (_isHovering && !widget.model.isFlagged);
+    if (isLighter) return Colors.grey[300];
+
+    return Colors.grey[400];
   }
 }
