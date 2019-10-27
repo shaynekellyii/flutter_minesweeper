@@ -6,20 +6,14 @@ class MinesweeperBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<GameModel>(
-      builder: (context, model, child) => Padding(
-        padding: const EdgeInsets.all(8.0),
+      builder: (context, model, child) => Card(
         child: Container(
-          width: (24.0 * model.cols) + 20.0,
-          height: (24.0 * model.rows) + 20.0,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[300], width: 8.0),
-          ),
+          width: 24.0 * model.cols + 16.0,
+          height: 24.0 * model.rows + 16.0,
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: MinesweeperGrid(model: model),
-              ),
+              MinesweeperGrid(model: model),
             ],
           ),
         ),
@@ -103,14 +97,17 @@ class _TileState extends State<Tile> {
         child: GestureDetector(
           onTap: widget.onClick,
           onLongPress: widget.onLongPress,
-          child: Material(
-            color: widget.model.isPressed || _isHovering
-                ? Colors.grey[300]
-                : Colors.grey[400],
-            child: SizedBox(
-              height: 24.0,
-              width: 24.0,
-              child: Center(child: child),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4.0),
+            child: Material(
+              color: widget.model.isPressed || _isHovering
+                  ? Colors.grey[300]
+                  : Colors.grey[400],
+              child: SizedBox(
+                height: 24.0,
+                width: 24.0,
+                child: Center(child: child),
+              ),
             ),
           ),
         ),

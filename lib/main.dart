@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
 import 'package:flutter_minesweeper/widget/board.dart';
 import 'package:flutter_minesweeper/widget/dialog.dart';
-import 'package:flutter_minesweeper/widget/timer.dart';
+import 'package:flutter_minesweeper/widget/game_info.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -65,34 +65,6 @@ class MinesweeperScaffold extends StatelessWidget {
       return 'You lost!  😭';
     }
     return 'Minesweeper  💣';
-  }
-}
-
-class GameInfo extends StatelessWidget {
-  const GameInfo({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Consumer<GameModel>(
-            builder: (context, model, _) {
-              return Row(
-                children: <Widget>[
-                  TimerWidget(time: model.currentTime),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
-    );
   }
 }
 
