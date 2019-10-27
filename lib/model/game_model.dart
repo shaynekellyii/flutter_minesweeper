@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/model/difficulty.dart';
 
 // Breadth first search directions
 const List<List<int>> directions = [
@@ -51,6 +52,15 @@ class GameModel with ChangeNotifier {
   int _currentTime = 0;
   /// Current time in seconds that the game has been running.
   int get currentTime => _currentTime;
+
+  Difficulty _difficulty = Difficulty.values[0];
+  Difficulty get difficulty => _difficulty;
+  set difficulty(Difficulty newDifficulty) {
+    _rows = newDifficulty.rows;
+    _cols = newDifficulty.cols;
+    _mines = newDifficulty.mines;
+    restart();
+  }
 
   ///
   /// Recalculate state when a tile is pressed.

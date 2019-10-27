@@ -39,16 +39,22 @@ class MinesweeperGrid extends StatelessWidget {
       child: GridView.count(
         crossAxisCount: model.cols,
         physics: NeverScrollableScrollPhysics(),
-        children: List.generate(model.rows * model.cols, (i) {
-          final x = i ~/ model.rows;
-          final y = i % model.rows;
-          return Tile(
-            model: model.tiles[x][y],
-            onClick: () => model.onPressed(x, y),
-            onLongPress: () => model.onFlagged(x, y),
-          );
-        }),
+        children: generateChildren(model),
       ),
     );
+  }
+
+  List<Widget> generateChildren(GameModel model) {
+    return List.generate(
+      model.rows,
+      (x) => List.generate(
+        model.cols,
+        (y) => Tile(
+          model: model.tiles[x][y],
+          onClick: () => model.onPressed(x, y),
+          onLongPress: () => model.onFlagged(x, y),
+        ),
+      ),
+    ).expand((e) => e).toList();
   }
 }
