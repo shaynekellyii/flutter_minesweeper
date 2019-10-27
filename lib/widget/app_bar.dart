@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
 import 'package:flutter_minesweeper/widget/dialog.dart';
+import 'package:flutter_minesweeper/widget/theme.dart';
 
 class MinesweeperAppBar extends StatelessWidget {
-  const MinesweeperAppBar({Key key, @required this.model}) : super(key: key);
+  const MinesweeperAppBar({
+    Key key,
+    @required this.gameModel,
+    @required this.themeModel,
+  }) : super(key: key);
 
-  final GameModel model;
+  final GameModel gameModel;
+  final ThemeModel themeModel;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(_getTitleString(model)),
+      title: Text(_getTitleString(gameModel)),
       actions: <Widget>[
-        AppBarAction(
-          icon: const Icon(Icons.equalizer),
-          onPressed: () => DifficultyDialog.show(
-              context, (difficulty) => model.difficulty = difficulty),
-          title: const AppBarActionText('Difficulty'),
-        ),
         AppBarAction(
           icon: const Icon(Icons.gamepad),
           onPressed: () => ControlDialog.show(context),
           title: const AppBarActionText('Controls'),
         ),
         AppBarAction(
+          icon: const Icon(Icons.equalizer),
+          onPressed: () => DifficultyDialog.show(
+              context, (difficulty) => gameModel.difficulty = difficulty),
+          title: const AppBarActionText('Difficulty'),
+        ),
+        AppBarAction(
+          icon: Icon(
+              themeModel.isLight ? Icons.brightness_3 : Icons.brightness_5),
+          onPressed: () => themeModel.isLight = !themeModel.isLight,
+          title: AppBarActionText(themeModel.isLight ? 'Dark' : 'Light'),
+        ),
+        AppBarAction(
           icon: const Icon(Icons.refresh),
-          onPressed: () => RestartDialog.show(context, () => model.restart()),
+          onPressed: () =>
+              RestartDialog.show(context, () => gameModel.restart()),
           title: const AppBarActionText('Restart'),
         ),
       ],

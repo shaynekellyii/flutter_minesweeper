@@ -3,12 +3,16 @@ import 'package:flutter_minesweeper/model/game_model.dart';
 import 'package:flutter_minesweeper/widget/app_bar.dart';
 import 'package:flutter_minesweeper/widget/board.dart';
 import 'package:flutter_minesweeper/widget/game_info.dart';
+import 'package:flutter_minesweeper/widget/theme.dart';
 import 'package:provider/provider.dart';
 
 class MinesweeperScaffold extends StatelessWidget {
   const MinesweeperScaffold({
     Key key,
+    @required this.themeModel,
   }) : super(key: key);
+
+  final ThemeModel themeModel;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class MinesweeperScaffold extends StatelessWidget {
       builder: (context, model, _) {
         return Scaffold(
           appBar: PreferredSize(
-            child: MinesweeperAppBar(model: model),
+            child: MinesweeperAppBar(gameModel: model, themeModel: themeModel),
             preferredSize: Size.fromHeight(kToolbarHeight),
           ),
           body: const MinesweeperBody(),
