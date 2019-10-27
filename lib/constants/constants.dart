@@ -10,4 +10,5 @@ const List<List<int>> kBfsDirections = [
   [1, 1],
 ];
 
+const kMinDesktopTilePixels = 24.0;
 const kMobileLayoutThresholdPixels = 948.0;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/constants/strings.dart';
 import 'package:flutter_minesweeper/model/models.dart';
 import 'package:flutter_minesweeper/util/view_util.dart';
 import 'package:flutter_minesweeper/widget/widgets.dart';
@@ -22,25 +23,25 @@ class MinesweeperAppBar extends StatelessWidget {
         AppBarAction(
           icon: const Icon(Icons.gamepad),
           onPressed: () => ControlDialog.show(context),
-          title: 'Controls',
+          title: kControls,
         ),
         AppBarAction(
           icon: const Icon(Icons.equalizer),
           onPressed: () => DifficultyDialog.show(
               context, (difficulty) => gameModel.difficulty = difficulty),
-          title: 'Difficulty',
+          title: kDifficulty,
         ),
         AppBarAction(
           icon: Icon(
               themeModel.isLight ? Icons.brightness_3 : Icons.brightness_5),
           onPressed: () => themeModel.isLight = !themeModel.isLight,
-          title: themeModel.isLight ? 'Dark' : 'Light',
+          title: themeModel.isLight ? kDark : kLight,
         ),
         AppBarAction(
           icon: const Icon(Icons.refresh),
           onPressed: () =>
               RestartDialog.show(context, () => gameModel.restart()),
-          title: 'Restart',
+          title: kRestart,
         ),
       ],
     );
@@ -57,11 +58,11 @@ class MinesweeperAppBar extends StatelessWidget {
 
   String _getTitleString() {
     if (gameModel.hasWon) {
-      return 'You won!  😀👏🏼';
+      return kYouWon;
     } else if (gameModel.hasLost) {
-      return 'You lost!  😭';
+      return kYouLost;
     }
-    return 'Minesweeper  💣';
+    return kAppTitle;
   }
 }
 

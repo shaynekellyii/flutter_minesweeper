@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/constants/strings.dart';
 import 'package:flutter_minesweeper/model/models.dart';
 
 class ControlDialog extends StatelessWidget {
@@ -12,18 +13,18 @@ class ControlDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Controls 🕹'),
+      title: Text(kControlsDialogTitle),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text('⛏ Click on a tile to reveal what\'s below'),
-            Text('🚩 Click and hold a tile to flag it'),
+            Text(kHelpClickTile),
+            Text(kHelpHoldTile),
           ],
         ),
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Close'),
+          child: Text(kClose),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -51,9 +52,9 @@ class DifficultyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Difficulty'),
+      title: Text(kDifficulty),
       content: SingleChildScrollView(
-        child: ListBody(children: <Widget>[Text('The game will restart.')]),
+        child: ListBody(children: <Widget>[Text(kWillRestart)]),
       ),
       actions: <Widget>[
         ...DifficultyModel.values.map((difficulty) => FlatButton(
@@ -61,7 +62,7 @@ class DifficultyDialog extends StatelessWidget {
               onPressed: () => _setDifficulty(context, difficulty),
             )),
         FlatButton(
-          child: Text('Cancel'),
+          child: Text(kCancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -89,24 +90,24 @@ class RestartDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Restart'),
+      title: Text(kRestart),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text('Are you sure you want to restart? 🤔'),
+            Text(kRestartAreYouSure),
           ],
         ),
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Restart'),
+          child: Text(kRestart),
           onPressed: () {
             onRestart();
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: Text('Cancel'),
+          child: Text(kCancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],

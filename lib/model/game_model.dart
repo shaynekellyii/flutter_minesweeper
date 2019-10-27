@@ -18,9 +18,9 @@ class GameModel with ChangeNotifier {
   bool _shouldRegenerateMines = true;
 
   // By default, start at beginner level.
-  int _rows = 9;
-  int _cols = 9;
-  int _mines = 10;
+  int _rows = DifficultyModel.values[0].rows;
+  int _cols = DifficultyModel.values[0].cols;
+  int _mines = DifficultyModel.values[0].mines;
 
   /// Number of tile rows to display on the game board.
   int get rows => _rows;
