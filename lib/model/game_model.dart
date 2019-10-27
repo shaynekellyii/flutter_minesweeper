@@ -72,7 +72,7 @@ class GameModel with ChangeNotifier {
     if (tile.isPressed || tile.isFlagged) {
       return;
     } else if (tile.isMine) {
-      _endGame(false);
+      _endGame(false, losingTile: <int>[x, y]);
       tile.isPressed = true;
     } else {
       tile.isPressed = true;
@@ -126,10 +126,25 @@ class GameModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _endGame(bool hasWon) {
+  void _endGame(bool hasWon, {List<int> losingTile}) {
     _hasWon = hasWon;
     _hasLost = !hasWon;
+    _revealAllTiles(losingTile);
     _timer.cancel();
+  }
+
+  void _revealAllTiles(List<int> losingTile) {
+    _tiles
+        .asMap()
+        .forEach((rowIndex, row) => row.asMap().forEach((colIndex, tile) {
+              if (!tile.isFlagged) {
+                tile.isPressed = true;
+                tile.isExploded = losingTile != null &&
+                    losingTile[0] == rowIndex &&
+                    losingTile[1] == colIndex;
+                tile.adjacentMines = _getNumAdjacentMines(rowIndex, colIndex);
+              }
+            }));
   }
 
   int _getNumAdjacentMines(int x, int y) {
@@ -177,6 +192,7 @@ class GameModel with ChangeNotifier {
           isPressed: false,
           isMine: false,
           isFlagged: false,
+          isExploded: false,
         ),
       ),
     );
@@ -205,6 +221,7 @@ class GameModel with ChangeNotifier {
           isPressed: false,
           isMine: mines[x].contains(y),
           isFlagged: false,
+          isExploded: false,
         ),
       ),
     );
