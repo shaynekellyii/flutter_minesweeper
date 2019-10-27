@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
-import 'package:flutter_minesweeper/widget/header.dart';
 import 'package:provider/provider.dart';
 
 class MinesweeperBoard extends StatelessWidget {
@@ -21,8 +20,6 @@ class MinesweeperBoard extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 child: MinesweeperGrid(model: model),
               ),
-              // if (model.hasLost) Text('You lost!'),
-              // if (model.hasWon) Text('You won!'),
             ],
           ),
         ),

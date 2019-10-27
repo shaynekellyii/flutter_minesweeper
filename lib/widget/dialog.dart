@@ -17,7 +17,6 @@ class ControlDialog extends StatelessWidget {
           children: <Widget>[
             Text('⛏ Click on a tile to reveal what\'s below'),
             Text('🚩 Click and hold a tile to flag it'),
-            Text('🙂 Click the smiley face to restart'),
           ],
         ),
       ),
@@ -46,7 +45,7 @@ class RestartDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Controls 🕹'),
+      title: Text('Restart'),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[

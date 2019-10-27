@@ -32,30 +32,39 @@ class MinesweeperScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Minesweeper'),
-        centerTitle: true,
-        actions: <Widget>[
-          ToolbarButton(
-            icon: Icon(Icons.gamepad),
-            onPressed: () => ControlDialog.show(context),
-            title: Text('Controls'),
-          ),
-          Consumer<GameModel>(
-            builder: (context, model, _) {
-              return ToolbarButton(
+    return Consumer<GameModel>(
+      builder: (context, model, _) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(_getTitleString(model)),
+            centerTitle: true,
+            actions: <Widget>[
+              ToolbarButton(
+                icon: Icon(Icons.gamepad),
+                onPressed: () => ControlDialog.show(context),
+                title: Text('Controls'),
+              ),
+              ToolbarButton(
                 icon: Icon(Icons.refresh),
                 onPressed: () =>
                     RestartDialog.show(context, () => model.restart()),
                 title: Text('Restart'),
-              );
-            },
+              ),
+            ],
           ),
-        ],
-      ),
-      body: MinesweeperScreen(),
+          body: MinesweeperScreen(),
+        );
+      },
     );
+  }
+
+  String _getTitleString(GameModel model) {
+    if (model.hasWon) {
+      return 'You won!  😀👏🏼';
+    } else if (model.hasLost) {
+      return 'You lost!  😭';
+    }
+    return 'Minesweeper  💣';
   }
 }
 
