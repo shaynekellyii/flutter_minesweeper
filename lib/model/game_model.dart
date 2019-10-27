@@ -2,24 +2,16 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/constants/constants.dart';
 import 'package:flutter_minesweeper/model/difficulty.dart';
-
-// Breadth first search directions
-const List<List<int>> directions = [
-  [-1, -1],
-  [-1, 0],
-  [-1, 1],
-  [0, -1],
-  [0, 1],
-  [1, -1],
-  [1, 0],
-  [1, 1],
-];
+import 'package:flutter_minesweeper/model/tile.dart';
 
 class GameModel with ChangeNotifier {
   GameModel() {
-    _generateTiles();
+    _resetTiles();
   }
+
+  bool _shouldRegenerateMines = true;
 
   int _rows = 9;
   int _cols = 9;
@@ -27,16 +19,18 @@ class GameModel with ChangeNotifier {
 
   int get rows => _rows;
   int get cols => _cols;
+
   /// Total tiles to display on the game board.
   int get totalTiles => _rows * _cols;
 
   int _flagged = 0;
+
   /// Number of flags placed
   int get flagsPlaced => _flagged;
 
   /// Number of mines remaining
   int get minesRemaining => _mines - _flagged;
-  
+
   int _improperlyFlagged = 0;
 
   bool _hasWon = false;
@@ -44,12 +38,14 @@ class GameModel with ChangeNotifier {
   bool get hasWon => _hasWon;
   bool get hasLost => _hasLost;
 
-  List<List<TileModel>> _tiles = <List<TileModel>>[];
+  List<List<TileModel>> _tiles;
+
   /// Tiles to be accessed by Cartesian coordinates i.e. tiles[x][y]
   List<List<TileModel>> get tiles => _tiles;
 
   Timer _timer;
   int _currentTime = 0;
+
   /// Current time in seconds that the game has been running.
   int get currentTime => _currentTime;
 
@@ -66,8 +62,11 @@ class GameModel with ChangeNotifier {
   /// Recalculate state when a tile is pressed.
   ///
   void onPressed(int x, int y) {
+    if (_hasWon || _hasLost) return;
+    if (_shouldRegenerateMines) _placeMines(x, y);
+
     final tile = _tiles[x][y];
-    
+
     if (_timer == null || !_timer.isActive) _startTimer();
 
     if (tile.isPressed || tile.isFlagged) {
@@ -91,7 +90,7 @@ class GameModel with ChangeNotifier {
   void onFlagged(int x, int y) {
     final tile = _tiles[x][y];
 
-    if (tile.isPressed) return;
+    if (_shouldRegenerateMines || tile.isPressed) return;
 
     if (tile.isFlagged) {
       _flagged--;
@@ -118,12 +117,13 @@ class GameModel with ChangeNotifier {
     _improperlyFlagged = 0;
     _hasWon = false;
     _hasLost = false;
-    
+
     _timer?.cancel();
     _currentTime = 0;
 
-    _tiles.clear();
-    _generateTiles();
+    _resetTiles();
+    _shouldRegenerateMines = true;
+    notifyListeners();
   }
 
   void _endGame(bool hasWon) {
@@ -134,7 +134,7 @@ class GameModel with ChangeNotifier {
 
   int _getNumAdjacentMines(int x, int y) {
     int adjacent = 0;
-    directions.forEach((List<int> dir) {
+    kBfsDirections.forEach((List<int> dir) {
       final newX = x + dir[0];
       final newY = y + dir[1];
       if (_isInBounds(newX, newY) && _tiles[newX][newY].isMine) {
@@ -144,8 +144,20 @@ class GameModel with ChangeNotifier {
     return adjacent;
   }
 
+  List<Set<int>> _getAdjacentMines(int x, int y) {
+    final adjacent = List.generate(_rows, (_) => <int>{});
+    kBfsDirections.forEach((List<int> dir) {
+      final newX = x + dir[0];
+      final newY = y + dir[1];
+      if (_isInBounds(newX, newY)) {
+        adjacent[newX].add(y);
+      }
+    });
+    return adjacent;
+  }
+
   void _visitAllAdjacentMines(int x, int y) {
-    directions.forEach((List<int> dir) {
+    kBfsDirections.forEach((List<int> dir) {
       final newX = x + dir[0];
       final newY = y + dir[1];
       if (_isInBounds(newX, newY)) {
@@ -156,16 +168,30 @@ class GameModel with ChangeNotifier {
 
   bool _isInBounds(int x, int y) => x >= 0 && x < rows && y >= 0 && y < cols;
 
-  void _generateTiles() {
+  void _resetTiles() {
+    _tiles = List.generate(
+      _rows,
+      (x) => List.generate(
+        _cols,
+        (y) => TileModel(
+          isPressed: false,
+          isMine: false,
+          isFlagged: false,
+        ),
+      ),
+    );
+    notifyListeners();
+  }
+
+  void _placeMines(int seedX, int seedY) {
     final List<Set> mines = List.generate(_rows, (_) => <int>{});
 
-    // Place mines randomly
     var numMines = 0;
     final rand = Random();
     while (numMines < _mines) {
       int x = rand.nextInt(_rows);
       int y = rand.nextInt(_cols);
-      if (!mines[x].contains(y)) {
+      if (!(mines[x].contains(y) || _isInSafeZone(x, y, seedX, seedY))) {
         mines[x].add(y);
         numMines++;
       }
@@ -182,8 +208,12 @@ class GameModel with ChangeNotifier {
         ),
       ),
     );
+    _shouldRegenerateMines = false;
     notifyListeners();
   }
+
+  bool _isInSafeZone(int x, int y, int safeX, int safeY) =>
+      (x - safeX).abs() <= 1 && (y - safeY).abs() <= 1;
 
   void _startTimer() {
     _timer = Timer.periodic(
@@ -194,18 +224,4 @@ class GameModel with ChangeNotifier {
       },
     );
   }
-}
-
-class TileModel {
-  bool isPressed;
-  bool isFlagged;
-  bool isMine;
-  int adjacentMines = 0;
-
-  TileModel({
-    @required this.isPressed,
-    @required this.isFlagged,
-    @required this.isMine,
-    this.adjacentMines,
-  });
 }
