@@ -6,51 +6,61 @@ import 'package:flutter_minesweeper/constants/constants.dart';
 import 'package:flutter_minesweeper/model/difficulty.dart';
 import 'package:flutter_minesweeper/model/tile.dart';
 
+///
+/// Model for the Minesweeper screen.
+/// Has [ChangeNotifer] mixin to rebuild the screen when state changes.
+///
 class GameModel with ChangeNotifier {
   GameModel() {
     _resetTiles();
   }
 
+  // True when mines need to be placed (e.g. when starting a new game).
   bool _shouldRegenerateMines = true;
 
+  // By default, start at beginner level.
   int _rows = 9;
   int _cols = 9;
   int _mines = 10;
 
+  /// Number of tile rows to display on the game board.
   int get rows => _rows;
+  /// Number of tile columns to display on the game board.
   int get cols => _cols;
-
   /// Total tiles to display on the game board.
   int get totalTiles => _rows * _cols;
 
-  int _flagged = 0;
 
   /// Number of flags placed
   int get flagsPlaced => _flagged;
+  int _flagged = 0;
 
   /// Number of mines remaining
   int get minesRemaining => _mines - _flagged;
 
   int _improperlyFlagged = 0;
 
-  bool _hasWon = false;
-  bool _hasLost = false;
   bool get hasWon => _hasWon;
+  bool _hasWon = false;
   bool get hasLost => _hasLost;
+  bool _hasLost = false;
 
-  List<List<TileModel>> _tiles;
 
-  /// Tiles to be accessed by Cartesian coordinates i.e. tiles[x][y]
+  /// 
+  /// List of lists of tiles to be accessed by Cartesian coordinates 
+  /// i.e. tiles[x][y]
+  /// 
   List<List<TileModel>> get tiles => _tiles;
-
-  Timer _timer;
-  int _currentTime = 0;
+  List<List<TileModel>> _tiles;
 
   /// Current time in seconds that the game has been running.
   int get currentTime => _currentTime;
+  int _currentTime = 0;
+  Timer _timer;
 
-  Difficulty _difficulty = Difficulty.values[0];
+  /// The current game difficulty. Set to beginner by default.
   Difficulty get difficulty => _difficulty;
+  Difficulty _difficulty = Difficulty.values[0];
   set difficulty(Difficulty newDifficulty) {
     _rows = newDifficulty.rows;
     _cols = newDifficulty.cols;
@@ -60,6 +70,13 @@ class GameModel with ChangeNotifier {
 
   ///
   /// Recalculate state when a tile is pressed.
+  /// Presses will be ignored when the game is over.
+  /// 
+  /// Mines will be placed and timer will be started if this is the first tile 
+  /// pressed of the current game.
+  /// 
+  /// Notifies [Widget] listeners that they should rebuild after state is 
+  /// recalculated.
   ///
   void onPressed(int x, int y) {
     if (_hasWon || _hasLost) return;
@@ -86,6 +103,9 @@ class GameModel with ChangeNotifier {
 
   ///
   /// Updates the state after marking a tile as flagged.
+  /// 
+  /// Notifies [Widget] listeners that they should rebuild after state is 
+  /// recalculated.
   ///
   void onFlagged(int x, int y) {
     final tile = _tiles[x][y];
@@ -159,18 +179,6 @@ class GameModel with ChangeNotifier {
     return adjacent;
   }
 
-  List<Set<int>> _getAdjacentMines(int x, int y) {
-    final adjacent = List.generate(_rows, (_) => <int>{});
-    kBfsDirections.forEach((List<int> dir) {
-      final newX = x + dir[0];
-      final newY = y + dir[1];
-      if (_isInBounds(newX, newY)) {
-        adjacent[newX].add(y);
-      }
-    });
-    return adjacent;
-  }
-
   void _visitAllAdjacentMines(int x, int y) {
     kBfsDirections.forEach((List<int> dir) {
       final newX = x + dir[0];
@@ -194,11 +202,13 @@ class GameModel with ChangeNotifier {
           isFlagged: false,
           isExploded: false,
         ),
-      ),
+      )
     );
     notifyListeners();
   }
 
+  // The seedX and seedY coordinates are used to make sure that no mine is 
+  // placed on the clicked tile or any adjacent tile.
   void _placeMines(int seedX, int seedY) {
     final List<Set> mines = List.generate(_rows, (_) => <int>{});
 
@@ -234,7 +244,7 @@ class GameModel with ChangeNotifier {
 
   void _startTimer() {
     _timer = Timer.periodic(
-      Duration(seconds: 1),
+      const Duration(seconds: 1),
       (timer) {
         _currentTime = timer.tick;
         notifyListeners();
