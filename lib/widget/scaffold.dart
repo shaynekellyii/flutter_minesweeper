@@ -32,8 +32,8 @@ class MinesweeperScaffold extends StatelessWidget {
 
 class MinesweeperBody extends StatelessWidget {
   const MinesweeperBody({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
+
+  Widget _buildMobileLayout(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
@@ -49,5 +49,31 @@ class MinesweeperBody extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32.0) +
+              EdgeInsets.only(left: 32.0, right: 16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              MinesweeperBoard(),
+              GameInfo(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery.of(context).size.shortestSide < 948
+        ? _buildMobileLayout(context)
+        : _buildDesktopLayout(context);
   }
 }
