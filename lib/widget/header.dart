@@ -16,7 +16,6 @@ class MinesweeperHeader extends StatelessWidget {
         children: <Widget>[
           MineCounter(count: model.minesRemaining),
           NewGameButton(onTap: model.restart),
-          MineCounter(count: model.flagsPlaced),
         ],
       ),
     );

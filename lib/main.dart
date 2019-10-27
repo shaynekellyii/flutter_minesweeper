@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
 import 'package:flutter_minesweeper/widget/board.dart';
 import 'package:flutter_minesweeper/widget/dialog.dart';
+import 'package:flutter_minesweeper/widget/timer.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -25,6 +26,34 @@ class MyApp extends StatelessWidget {
           ],
         ),
         body: MinesweeperScreen(),
+      ),
+    );
+  }
+}
+
+class GameInfo extends StatelessWidget {
+  const GameInfo({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Consumer<GameModel>(
+            builder: (context, model, _) {
+              return Row(
+                children: <Widget>[
+                  TimerWidget(time: model.currentTime),
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -58,14 +87,15 @@ class MinesweeperScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ChangeNotifierProvider.value(
-                value: GameModel(),
-                child: MinesweeperBoard(),
-              ),
-            ],
+          child: ChangeNotifierProvider.value(
+            value: GameModel(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                MinesweeperBoard(),
+                GameInfo(),
+              ],
+            ),
           ),
         ),
       ),

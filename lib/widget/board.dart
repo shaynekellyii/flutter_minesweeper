@@ -110,12 +110,9 @@ class _TileState extends State<Tile> {
             color: widget.model.isPressed || _isHovering
                 ? Colors.grey[300]
                 : Colors.grey[400],
-            child: Container(
+            child: SizedBox(
               height: 24.0,
               width: 24.0,
-              // decoration: BoxDecoration(
-              //   border: Border.all(color: Colors.white, width: 1.0),
-              // ),
               child: Center(child: child),
             ),
           ),

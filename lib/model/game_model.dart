@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -19,47 +20,50 @@ class GameModel with ChangeNotifier {
     _generateTiles();
   }
 
-  ///
-  /// Internal state
-  /// For now, hardcoded to 9x9 with 10 mines.
-  ///
   int _rows = 9;
   int _cols = 9;
   int _mines = 10;
 
+  int get rows => _rows;
+  int get cols => _cols;
+  /// Total tiles to display on the game board.
+  int get totalTiles => _rows * _cols;
+
   int _flagged = 0;
+  /// Number of flags placed
+  int get flagsPlaced => _flagged;
+
+  /// Number of mines remaining
+  int get minesRemaining => _mines - _flagged;
+  
   int _improperlyFlagged = 0;
 
   bool _hasWon = false;
   bool _hasLost = false;
-
-  List<List<TileModel>> tiles = <List<TileModel>>[];
-
-  int get rows => _rows;
-  int get cols => _cols;
-
-  /// Total tiles to display on the game board.
-  int get totalTiles => _rows * _cols;
-
-  /// Number of mines remaining
-  int get minesRemaining => _mines - _flagged;
-
-  /// Number of flags placed
-  int get flagsPlaced => _flagged;
-
   bool get hasWon => _hasWon;
   bool get hasLost => _hasLost;
+
+  List<List<TileModel>> _tiles = <List<TileModel>>[];
+  /// Tiles to be accessed by Cartesian coordinates i.e. tiles[x][y]
+  List<List<TileModel>> get tiles => _tiles;
+
+  Timer _timer;
+  int _currentTime = 0;
+  /// Current time in seconds that the game has been running.
+  int get currentTime => _currentTime;
 
   ///
   /// Recalculate state when a tile is pressed.
   ///
   void onPressed(int x, int y) {
-    final tile = tiles[x][y];
+    final tile = _tiles[x][y];
+    
+    if (_timer == null || !_timer.isActive) _startTimer();
 
     if (tile.isPressed || tile.isFlagged) {
       return;
     } else if (tile.isMine) {
-      _hasLost = true;
+      _endGame(false);
       tile.isPressed = true;
     } else {
       tile.isPressed = true;
@@ -75,10 +79,10 @@ class GameModel with ChangeNotifier {
   /// Updates the state after marking a tile as flagged.
   ///
   void onFlagged(int x, int y) {
-    final tile = tiles[x][y];
+    final tile = _tiles[x][y];
 
     if (tile.isPressed) return;
-    
+
     if (tile.isFlagged) {
       _flagged--;
       if (!tile.isMine) _improperlyFlagged--;
@@ -90,7 +94,7 @@ class GameModel with ChangeNotifier {
 
     // Check for winner
     if (_improperlyFlagged == 0 && _flagged == _mines) {
-      _hasWon = true;
+      _endGame(true);
     }
 
     notifyListeners();
@@ -105,8 +109,17 @@ class GameModel with ChangeNotifier {
     _hasWon = false;
     _hasLost = false;
     
-    tiles.clear();
+    _timer.cancel();
+    _currentTime = 0;
+
+    _tiles.clear();
     _generateTiles();
+  }
+
+  void _endGame(bool hasWon) {
+    _hasWon = hasWon;
+    _hasLost = !hasWon;
+    _timer.cancel();
   }
 
   int _getNumAdjacentMines(int x, int y) {
@@ -114,7 +127,7 @@ class GameModel with ChangeNotifier {
     directions.forEach((List<int> dir) {
       final newX = x + dir[0];
       final newY = y + dir[1];
-      if (_isInBounds(newX, newY) && tiles[newX][newY].isMine) {
+      if (_isInBounds(newX, newY) && _tiles[newX][newY].isMine) {
         adjacent++;
       }
     });
@@ -148,7 +161,7 @@ class GameModel with ChangeNotifier {
       }
     }
 
-    tiles = List.generate(
+    _tiles = List.generate(
       _rows,
       (x) => List.generate(
         _cols,
@@ -160,6 +173,16 @@ class GameModel with ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(
+      Duration(seconds: 1),
+      (timer) {
+        _currentTime = timer.tick;
+        notifyListeners();
+      },
+    );
   }
 }
 
