@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
-import 'package:flutter_minesweeper/widget/board.dart';
-import 'package:flutter_minesweeper/widget/dialog.dart';
-import 'package:flutter_minesweeper/widget/game_info.dart';
 import 'package:flutter_minesweeper/widget/scaffold.dart';
 import 'package:provider/provider.dart';
 
