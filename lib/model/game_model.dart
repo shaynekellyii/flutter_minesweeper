@@ -244,6 +244,7 @@ class GameModel with ChangeNotifier {
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
+        if (timer.tick > kMaxTime) return;
         _currentTime = timer.tick;
         notifyListeners();
       },

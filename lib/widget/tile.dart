@@ -75,9 +75,10 @@ class _TileState extends State<Tile> {
   Color _getBackgroundColor() {
     if (widget.model.isExploded) return Colors.red;
 
+    bool isLightMode = Theme.of(context).brightness == Brightness.light;
     bool isLighter = widget.model.isPressed || (_isHovering && !widget.model.isFlagged);
-    if (isLighter) return Colors.grey[300];
+    if (isLighter) return isLightMode ? Colors.grey[300] : Colors.black45;
 
-    return Colors.grey[400];
+    return isLightMode ? Colors.grey[400] : Colors.black;
   }
 }

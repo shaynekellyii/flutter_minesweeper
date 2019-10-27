@@ -6,6 +6,7 @@ const kControls = 'Controls';
 const kDark = 'Dark';
 const kDifficulty = 'Difficulty';
 const kLight = 'Light';
+const kMinesweeper = 'Minesweeper';
 const kRestart = 'Restart';
 const kRestartAreYouSure = 'Are you sure you want to restart? 🤔';
 const kWillRestart = 'The game will restart.';
