@@ -109,7 +109,7 @@ class GameModel with ChangeNotifier {
     _hasWon = false;
     _hasLost = false;
     
-    _timer.cancel();
+    _timer?.cancel();
     _currentTime = 0;
 
     _tiles.clear();

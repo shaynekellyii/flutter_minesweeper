@@ -17,16 +17,44 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Dosis',
         primaryColor: Colors.grey[300],
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Minesweeper'),
-          centerTitle: true,
-          actions: <Widget>[
-            ControlButton(),
-          ],
-        ),
-        body: MinesweeperScreen(),
+      home: ChangeNotifierProvider.value(
+        value: GameModel(),
+        child: MinesweeperScaffold(),
       ),
+    );
+  }
+}
+
+class MinesweeperScaffold extends StatelessWidget {
+  const MinesweeperScaffold({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Minesweeper'),
+        centerTitle: true,
+        actions: <Widget>[
+          ToolbarButton(
+            icon: Icon(Icons.gamepad),
+            onPressed: () => ControlDialog.show(context),
+            title: Text('Controls'),
+          ),
+          Consumer<GameModel>(
+            builder: (context, model, _) {
+              return ToolbarButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () =>
+                    RestartDialog.show(context, () => model.restart()),
+                title: Text('Restart'),
+              );
+            },
+          ),
+        ],
+      ),
+      body: MinesweeperScreen(),
     );
   }
 }
@@ -59,22 +87,28 @@ class GameInfo extends StatelessWidget {
   }
 }
 
-class ControlButton extends StatelessWidget {
-  const ControlButton({Key key}) : super(key: key);
+class ToolbarButton extends StatelessWidget {
+  const ToolbarButton({
+    Key key,
+    @required this.icon,
+    @required this.title,
+    this.onPressed,
+  }) : super(key: key);
+
+  final Icon icon;
+  final Widget title;
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       child: Row(
         children: <Widget>[
-          Icon(Icons.gamepad),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text('Controls'),
-          )
+          icon,
+          Padding(padding: const EdgeInsets.only(left: 8.0), child: title),
         ],
       ),
-      onPressed: () => ControlDialog.show(context),
+      onPressed: onPressed,
     );
   }
 }
@@ -87,15 +121,12 @@ class MinesweeperScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 32.0),
-          child: ChangeNotifierProvider.value(
-            value: GameModel(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                MinesweeperBoard(),
-                GameInfo(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              MinesweeperBoard(),
+              GameInfo(),
+            ],
           ),
         ),
       ),

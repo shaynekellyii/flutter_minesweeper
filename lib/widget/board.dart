@@ -11,12 +11,12 @@ class MinesweeperBoard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           width: (24.0 * model.cols) + 20.0,
-          height: (24.0 * model.rows) + 70.0,
+          height: (24.0 * model.rows) + 20.0,
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[300], width: 8.0)),
+            border: Border.all(color: Colors.grey[300], width: 8.0),
+          ),
           child: Column(
             children: <Widget>[
-              MinesweeperHeader(model: model),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: MinesweeperGrid(model: model),
