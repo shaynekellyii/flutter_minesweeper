@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/constants/constants.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
+import 'package:flutter_minesweeper/util/view_util.dart';
 import 'package:flutter_minesweeper/widget/app_bar.dart';
 import 'package:flutter_minesweeper/widget/board.dart';
 import 'package:flutter_minesweeper/widget/game_info.dart';
@@ -72,7 +74,7 @@ class MinesweeperBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.of(context).size.shortestSide < 948
+    return isMobile(context)
         ? _buildMobileLayout(context)
         : _buildDesktopLayout(context);
   }

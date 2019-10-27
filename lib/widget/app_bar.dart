@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
+import 'package:flutter_minesweeper/util/view_util.dart';
 import 'package:flutter_minesweeper/widget/dialog.dart';
 import 'package:flutter_minesweeper/widget/theme.dart';
 
@@ -17,30 +18,30 @@ class MinesweeperAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: _getAppBarColor(context),
-      title: Text(_getTitleString(context)),
+      title: Text(_getTitleString()),
       actions: <Widget>[
         AppBarAction(
           icon: const Icon(Icons.gamepad),
           onPressed: () => ControlDialog.show(context),
-          title: const AppBarActionText('Controls'),
+          title: 'Controls',
         ),
         AppBarAction(
           icon: const Icon(Icons.equalizer),
           onPressed: () => DifficultyDialog.show(
               context, (difficulty) => gameModel.difficulty = difficulty),
-          title: const AppBarActionText('Difficulty'),
+          title: 'Difficulty',
         ),
         AppBarAction(
           icon: Icon(
               themeModel.isLight ? Icons.brightness_3 : Icons.brightness_5),
           onPressed: () => themeModel.isLight = !themeModel.isLight,
-          title: AppBarActionText(themeModel.isLight ? 'Dark' : 'Light'),
+          title: themeModel.isLight ? 'Dark' : 'Light',
         ),
         AppBarAction(
           icon: const Icon(Icons.refresh),
           onPressed: () =>
               RestartDialog.show(context, () => gameModel.restart()),
-          title: const AppBarActionText('Restart'),
+          title: 'Restart',
         ),
       ],
     );
@@ -51,12 +52,11 @@ class MinesweeperAppBar extends StatelessWidget {
       return Colors.green[800];
     } else if (gameModel.hasLost) {
       return Colors.red[800];
-    } 
+    }
     return Theme.of(context).appBarTheme.color;
   }
 
-  String _getTitleString(BuildContext context) {
-    return MediaQuery.of(context).size.shortestSide.toString();
+  String _getTitleString() {
     if (gameModel.hasWon) {
       return 'You won!  😀👏🏼';
     } else if (gameModel.hasLost) {
@@ -90,19 +90,28 @@ class AppBarAction extends StatelessWidget {
   }) : super(key: key);
 
   final Icon icon;
-  final Widget title;
+  final String title;
   final Function() onPressed;
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildDesktopWidget() {
     return FlatButton(
       child: Row(
         children: <Widget>[
           icon,
-          Padding(padding: const EdgeInsets.only(left: 8.0), child: title),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: AppBarActionText(title),
+          ),
         ],
       ),
       onPressed: onPressed,
     );
   }
+
+  Widget _buildMobileWidget() =>
+      IconButton(icon: icon, onPressed: onPressed, tooltip: title);
+
+  @override
+  Widget build(BuildContext context) =>
+      isMobile(context) ? _buildMobileWidget() : _buildDesktopWidget();
 }

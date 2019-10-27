@@ -9,3 +9,5 @@ const List<List<int>> kBfsDirections = [
   [1, 0],
   [1, 1],
 ];
+
+const kMobileLayoutThresholdPixels = 948.0;
