@@ -61,11 +61,20 @@ class GameModel with ChangeNotifier {
   DifficultyModel get difficulty => _difficulty;
   DifficultyModel _difficulty = DifficultyModel.values[0];
   set difficulty(DifficultyModel newDifficulty) {
+    _difficulty = newDifficulty;
     _rows = newDifficulty.rows;
     _cols = newDifficulty.cols;
     _mines = newDifficulty.mines;
     restart();
   }
+
+  ///
+  /// List of high scores to be displayed.
+  ///
+  /// Since we can't save data locally on Flutter web right now, we'll just
+  /// keep them in memory.
+  ///
+  List<HighScoreModel> highScores = [];
 
   ///
   /// Recalculate state when a tile is pressed.
@@ -148,8 +157,20 @@ class GameModel with ChangeNotifier {
   void _endGame(bool hasWon, {List<int> losingTile}) {
     _hasWon = hasWon;
     _hasLost = !hasWon;
+
+    if (_hasWon) _addHighScore();
+
     _revealAllTiles(losingTile);
     _timer.cancel();
+  }
+
+  void _addHighScore() {
+    highScores
+        .add(HighScoreModel(difficulty: difficulty.name, time: _currentTime));
+    highScores.sort((s1, s2) {
+      final difficultyDiff = s2.difficulty.compareTo(s1.difficulty);
+      return difficultyDiff != 0 ? difficultyDiff : s1.time.compareTo(s2.time);
+    });
   }
 
   void _revealAllTiles(List<int> losingTile) {

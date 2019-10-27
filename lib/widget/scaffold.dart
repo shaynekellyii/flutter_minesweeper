@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/models.dart';
 import 'package:flutter_minesweeper/util/view_util.dart';
+import 'package:flutter_minesweeper/widget/high_scores.dart';
 import 'package:flutter_minesweeper/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class MinesweeperScaffold extends StatelessWidget {
             child: MinesweeperAppBar(gameModel: model, themeModel: themeModel),
             preferredSize: Size.fromHeight(kToolbarHeight),
           ),
-          body: const MinesweeperBody(),
+          body: MinesweeperBody(model: model),
         );
       },
     );
@@ -29,7 +30,13 @@ class MinesweeperScaffold extends StatelessWidget {
 }
 
 class MinesweeperBody extends StatelessWidget {
-  const MinesweeperBody({Key key}) : super(key: key);
+  const MinesweeperBody({
+    Key key,
+    @required this.model,
+  })  : assert(model != null),
+        super(key: key);
+
+  final GameModel model;
 
   Widget _buildMobileLayout(BuildContext context) {
     return SizedBox(
@@ -42,6 +49,7 @@ class MinesweeperBody extends StatelessWidget {
             children: <Widget>[
               MinesweeperBoard(),
               GameInfo(),
+              HighScores(highScores: model.highScores),
             ],
           ),
         ),

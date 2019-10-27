@@ -12,5 +12,6 @@ const List<List<int>> kBfsDirections = [
 
 const kMaxTime = 999;
 
+const kHighScoreTableWidth = 300.0;
 const kMinDesktopTilePixels = 24.0;
 const kMobileLayoutThresholdPixels = 948.0;
