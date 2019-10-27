@@ -16,7 +16,8 @@ class MinesweeperAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(_getTitleString(gameModel)),
+      backgroundColor: _getAppBarColor(context),
+      title: Text(_getTitleString()),
       actions: <Widget>[
         AppBarAction(
           icon: const Icon(Icons.gamepad),
@@ -45,10 +46,19 @@ class MinesweeperAppBar extends StatelessWidget {
     );
   }
 
-  String _getTitleString(GameModel model) {
-    if (model.hasWon) {
+  Color _getAppBarColor(BuildContext context) {
+    if (gameModel.hasWon) {
+      return Colors.green[800];
+    } else if (gameModel.hasLost) {
+      return Colors.red[800];
+    } 
+    return Theme.of(context).appBarTheme.color;
+  }
+
+  String _getTitleString() {
+    if (gameModel.hasWon) {
       return 'You won!  😀👏🏼';
-    } else if (model.hasLost) {
+    } else if (gameModel.hasLost) {
       return 'You lost!  😭';
     }
     return 'Minesweeper  💣';

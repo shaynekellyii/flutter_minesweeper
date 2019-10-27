@@ -15,7 +15,6 @@ class MinesweeperApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Minesweeper',
           theme: themeModel.theme,
-          darkTheme: ThemeData.dark(),
           home: ChangeNotifierProvider.value(
             value: GameModel(),
             child: MinesweeperScaffold(themeModel: themeModel),
