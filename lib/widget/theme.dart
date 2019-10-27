@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minesweeper/model/models.dart';
 import 'package:provider/provider.dart';
 
 class ThemeProvider extends StatelessWidget {
@@ -18,25 +19,3 @@ class ThemeProvider extends StatelessWidget {
     );
   }
 }
-
-class ThemeModel with ChangeNotifier {
-  ThemeData _theme = _kLightTheme;
-  ThemeData get theme => _theme;
-
-  bool _isLight = true;
-  get isLight => _isLight;
-  set isLight(bool newValue) {
-    if (_isLight != newValue) {
-      _isLight = newValue;
-      _theme = _isLight ? _kLightTheme : _kDarkTheme;
-      notifyListeners();
-    }
-  }
-}
-
-final _kLightTheme = ThemeData(
-  fontFamily: 'Dosis',
-  primaryColor: Colors.grey[300],
-);
-
-final _kDarkTheme = ThemeData.dark();

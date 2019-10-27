@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/constants/constants.dart';
-import 'package:flutter_minesweeper/model/game_model.dart';
+import 'package:flutter_minesweeper/model/models.dart';
 import 'package:flutter_minesweeper/util/view_util.dart';
-import 'package:flutter_minesweeper/widget/app_bar.dart';
-import 'package:flutter_minesweeper/widget/board.dart';
-import 'package:flutter_minesweeper/widget/game_info.dart';
-import 'package:flutter_minesweeper/widget/theme.dart';
+import 'package:flutter_minesweeper/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MinesweeperScaffold extends StatelessWidget {

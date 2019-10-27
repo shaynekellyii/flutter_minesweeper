@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/model/difficulty.dart';
+import 'package:flutter_minesweeper/model/models.dart';
 
 class ControlDialog extends StatelessWidget {
   static Future<void> show(BuildContext ctx) async {
@@ -37,10 +37,10 @@ class DifficultyDialog extends StatelessWidget {
     @required this.onDifficultyChanged,
   }) : super(key: key);
 
-  final Function(Difficulty) onDifficultyChanged;
+  final Function(DifficultyModel) onDifficultyChanged;
 
   static Future<void> show(
-      BuildContext ctx, Function(Difficulty) onDifficultyChanged) async {
+      BuildContext ctx, Function(DifficultyModel) onDifficultyChanged) async {
     return showDialog<void>(
       context: ctx,
       builder: (context) =>
@@ -56,7 +56,7 @@ class DifficultyDialog extends StatelessWidget {
         child: ListBody(children: <Widget>[Text('The game will restart.')]),
       ),
       actions: <Widget>[
-        ...Difficulty.values.map((difficulty) => FlatButton(
+        ...DifficultyModel.values.map((difficulty) => FlatButton(
               child: Text(difficulty.name),
               onPressed: () => _setDifficulty(context, difficulty),
             )),
@@ -68,7 +68,7 @@ class DifficultyDialog extends StatelessWidget {
     );
   }
 
-  void _setDifficulty(BuildContext context, Difficulty difficulty) {
+  void _setDifficulty(BuildContext context, DifficultyModel difficulty) {
     onDifficultyChanged(difficulty);
     Navigator.of(context).pop();
   }

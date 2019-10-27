@@ -3,8 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/constants/constants.dart';
-import 'package:flutter_minesweeper/model/difficulty.dart';
-import 'package:flutter_minesweeper/model/tile.dart';
+import 'package:flutter_minesweeper/model/models.dart';
 
 ///
 /// Model for the Minesweeper screen.
@@ -25,11 +24,12 @@ class GameModel with ChangeNotifier {
 
   /// Number of tile rows to display on the game board.
   int get rows => _rows;
+
   /// Number of tile columns to display on the game board.
   int get cols => _cols;
+
   /// Total tiles to display on the game board.
   int get totalTiles => _rows * _cols;
-
 
   /// Number of flags placed
   int get flagsPlaced => _flagged;
@@ -45,11 +45,10 @@ class GameModel with ChangeNotifier {
   bool get hasLost => _hasLost;
   bool _hasLost = false;
 
-
-  /// 
-  /// List of lists of tiles to be accessed by Cartesian coordinates 
+  ///
+  /// List of lists of tiles to be accessed by Cartesian coordinates
   /// i.e. tiles[x][y]
-  /// 
+  ///
   List<List<TileModel>> get tiles => _tiles;
   List<List<TileModel>> _tiles;
 
@@ -59,9 +58,9 @@ class GameModel with ChangeNotifier {
   Timer _timer;
 
   /// The current game difficulty. Set to beginner by default.
-  Difficulty get difficulty => _difficulty;
-  Difficulty _difficulty = Difficulty.values[0];
-  set difficulty(Difficulty newDifficulty) {
+  DifficultyModel get difficulty => _difficulty;
+  DifficultyModel _difficulty = DifficultyModel.values[0];
+  set difficulty(DifficultyModel newDifficulty) {
     _rows = newDifficulty.rows;
     _cols = newDifficulty.cols;
     _mines = newDifficulty.mines;
@@ -71,11 +70,11 @@ class GameModel with ChangeNotifier {
   ///
   /// Recalculate state when a tile is pressed.
   /// Presses will be ignored when the game is over.
-  /// 
-  /// Mines will be placed and timer will be started if this is the first tile 
+  ///
+  /// Mines will be placed and timer will be started if this is the first tile
   /// pressed of the current game.
-  /// 
-  /// Notifies [Widget] listeners that they should rebuild after state is 
+  ///
+  /// Notifies [Widget] listeners that they should rebuild after state is
   /// recalculated.
   ///
   void onPressed(int x, int y) {
@@ -103,8 +102,8 @@ class GameModel with ChangeNotifier {
 
   ///
   /// Updates the state after marking a tile as flagged.
-  /// 
-  /// Notifies [Widget] listeners that they should rebuild after state is 
+  ///
+  /// Notifies [Widget] listeners that they should rebuild after state is
   /// recalculated.
   ///
   void onFlagged(int x, int y) {
@@ -193,21 +192,20 @@ class GameModel with ChangeNotifier {
 
   void _resetTiles() {
     _tiles = List.generate(
-      _rows,
-      (x) => List.generate(
-        _cols,
-        (y) => TileModel(
-          isPressed: false,
-          isMine: false,
-          isFlagged: false,
-          isExploded: false,
-        ),
-      )
-    );
+        _rows,
+        (x) => List.generate(
+              _cols,
+              (y) => TileModel(
+                isPressed: false,
+                isMine: false,
+                isFlagged: false,
+                isExploded: false,
+              ),
+            ));
     notifyListeners();
   }
 
-  // The seedX and seedY coordinates are used to make sure that no mine is 
+  // The seedX and seedY coordinates are used to make sure that no mine is
   // placed on the clicked tile or any adjacent tile.
   void _placeMines(int seedX, int seedY) {
     final List<Set> mines = List.generate(_rows, (_) => <int>{});

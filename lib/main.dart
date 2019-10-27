@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/model/game_model.dart';
-import 'package:flutter_minesweeper/widget/scaffold.dart';
-import 'package:flutter_minesweeper/widget/theme.dart';
+import 'package:flutter_minesweeper/model/models.dart';
+import 'package:flutter_minesweeper/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MinesweeperApp());

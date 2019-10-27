@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/model/tile.dart';
+import 'package:flutter_minesweeper/model/models.dart';
 
 class Tile extends StatefulWidget {
   const Tile({

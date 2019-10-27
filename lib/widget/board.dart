@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
-import 'package:flutter_minesweeper/widget/tile.dart';
+import 'package:flutter_minesweeper/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MinesweeperBoard extends StatelessWidget {

@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 /// Model class describing the game settings for all user difficulties.
 ///
 @immutable
-class Difficulty {
-  const Difficulty._(
+class DifficultyModel {
+  const DifficultyModel._(
     this.name,
     this.rows,
     this.cols,
     this.mines,
   );
 
-  static const List<Difficulty> values = [
-    const Difficulty._('Beginner', 9, 9, 10),
-    const Difficulty._('Intermediate', 16, 16, 40),
-    const Difficulty._('Expert', 16, 30, 99),
+  static const List<DifficultyModel> values = [
+    const DifficultyModel._('Beginner', 9, 9, 10),
+    const DifficultyModel._('Intermediate', 16, 16, 40),
+    const DifficultyModel._('Expert', 16, 30, 99),
   ];
 
   final String name;

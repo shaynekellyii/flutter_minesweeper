@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/model/game_model.dart';
+import 'package:flutter_minesweeper/model/models.dart';
 import 'package:flutter_minesweeper/util/view_util.dart';
-import 'package:flutter_minesweeper/widget/dialog.dart';
-import 'package:flutter_minesweeper/widget/theme.dart';
+import 'package:flutter_minesweeper/widget/widgets.dart';
 
 class MinesweeperAppBar extends StatelessWidget {
   const MinesweeperAppBar({
