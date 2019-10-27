@@ -37,18 +37,17 @@ class MinesweeperScaffold extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(_getTitleString(model)),
-            centerTitle: true,
             actions: <Widget>[
               ToolbarButton(
                 icon: Icon(Icons.gamepad),
                 onPressed: () => ControlDialog.show(context),
-                title: Text('Controls'),
+                title: Text('Controls', style: TextStyle(fontSize: 18.0)),
               ),
               ToolbarButton(
                 icon: Icon(Icons.refresh),
                 onPressed: () =>
                     RestartDialog.show(context, () => model.restart()),
-                title: Text('Restart'),
+                title: Text('Restart', style: TextStyle(fontSize: 18.0)),
               ),
             ],
           ),
