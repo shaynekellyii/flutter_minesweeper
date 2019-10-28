@@ -34,4 +34,4 @@ See the [Dockerfile](https://github.com/shaynekellyii/flutter_minesweeper/blob/m
 
 ## Tests
 
-The project includes basic widget tests and unit tests.
+The project includes basic widget tests and unit tests. It also includes static analysis using the `pedantic` package.
