@@ -27,5 +27,6 @@ class DifficultyModel extends Comparable {
   final int level;
 
   @override
-  int compareTo(other) => this.level.compareTo(other.level);
+  int compareTo(other) =>
+      this.level.compareTo((other as DifficultyModel).level);
 }

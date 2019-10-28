@@ -10,7 +10,7 @@ class ThemeModel with ChangeNotifier {
   ThemeData get theme => _theme;
 
   bool _isLight = true;
-  get isLight => _isLight;
+  bool get isLight => _isLight;
   set isLight(bool newValue) {
     if (_isLight != newValue) {
       _isLight = newValue;
