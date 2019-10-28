@@ -17,21 +17,52 @@ class HighScores extends StatelessWidget {
     return SizedBox(
       width: kHighScoreTableWidth,
       child: Card(
-        child: DataTable(
-          columns: <DataColumn>[
-            DataColumn(label: const Text(kDifficulty), numeric: false),
-            DataColumn(label: const Text(kTime), numeric: true),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                kHighScores,
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+            HighScoresTable(highScores: highScores),
+            if (highScores.isEmpty) Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('None yet!'),
+            ) else Container(),
           ],
-          rows: highScores.map(
+        ),
+      ),
+    );
+  }
+}
+
+class HighScoresTable extends StatelessWidget {
+  const HighScoresTable({
+    Key key,
+    @required this.highScores,
+  }) : super(key: key);
+
+  final List<HighScoreModel> highScores;
+
+  @override
+  Widget build(BuildContext context) {
+    return DataTable(
+      columns: <DataColumn>[
+        DataColumn(label: const Text(kDifficulty), numeric: false),
+        DataColumn(label: const Text(kTime), numeric: true),
+      ],
+      rows: highScores
+          .map(
             (score) => DataRow(
               cells: <DataCell>[
                 DataCell(Text(score.difficulty)),
                 DataCell(Text('${score.time}')),
               ],
             ),
-          ).toList(),
-        ),
-      ),
+          )
+          .toList(),
     );
   }
 }

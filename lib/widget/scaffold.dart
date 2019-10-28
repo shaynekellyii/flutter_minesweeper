@@ -63,12 +63,20 @@ class MinesweeperBody extends StatelessWidget {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 32.0) +
-              EdgeInsets.only(left: 32.0, right: 16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+              const EdgeInsets.only(left: 32.0, right: 16.0),
+          child: Column(
             children: <Widget>[
-              MinesweeperBoard(),
-              GameInfo(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  MinesweeperBoard(),
+                  GameInfo(),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 64.0),
+                child: HighScores(highScores: model.highScores),
+              ),
             ],
           ),
         ),

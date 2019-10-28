@@ -5,6 +5,7 @@ const kClose = 'Close';
 const kControls = 'Controls';
 const kDark = 'Dark';
 const kDifficulty = 'Difficulty';
+const kHighScores = 'High scores';
 const kLight = 'Light';
 const kMinesweeper = 'Minesweeper';
 const kTime = 'Time';
