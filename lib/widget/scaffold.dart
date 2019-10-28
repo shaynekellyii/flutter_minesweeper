@@ -43,7 +43,7 @@ class MinesweeperBody extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 32.0),
+          padding: const EdgeInsets.symmetric(vertical: 32.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -71,11 +71,13 @@ class MinesweeperBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   MinesweeperBoard(),
-                  GameInfo(height: getTilePixelDimension(context) * model.rows + 24.0),
+                  GameInfo(
+                    height: getTilePixelDimension(context) * model.rows + 24.0,
+                  ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 64.0),
+                padding: const EdgeInsets.symmetric(vertical: 64.0),
                 child: HighScores(highScores: model.highScores),
               ),
             ],

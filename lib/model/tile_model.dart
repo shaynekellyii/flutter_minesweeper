@@ -5,13 +5,13 @@ class TileModel {
   bool isFlagged;
   bool isMine;
   bool isExploded;
-  int adjacentMines = 0;
+  int adjacentMines;
 
   TileModel({
     @required this.isPressed,
     @required this.isFlagged,
     @required this.isMine,
     @required this.isExploded,
-    this.adjacentMines,
+    this.adjacentMines = 0,
   });
 }

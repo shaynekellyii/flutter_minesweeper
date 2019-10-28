@@ -13,7 +13,7 @@ class DifficultyModel extends Comparable {
         rows = 0,
         cols = 0,
         mines = 0,
-        level = 3;
+        level = values.length;
 
   DifficultyModel.custom(this.cols, this.rows, this.mines)
       : level = 3,
