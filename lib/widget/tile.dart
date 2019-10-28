@@ -7,12 +7,14 @@ class Tile extends StatefulWidget {
     @required this.model,
     @required this.onClick,
     @required this.onLongPress,
+    this.isGameOver = false,
   })  : assert(model != null && onClick != null && onLongPress != null),
         super(key: key);
 
   final TileModel model;
   final Function() onClick;
   final Function() onLongPress;
+  final bool isGameOver;
 
   @override
   _TileState createState() => _TileState();
@@ -54,8 +56,8 @@ class _TileState extends State<Tile> {
 
   Widget _getTileContent(BoxConstraints constraints) {
     final iconSize = constraints.biggest.height - 1.0;
-    Widget child;
 
+    Widget child;
     if (widget.model.isPressed) {
       if (widget.model.isMine) {
         child = Icon(Icons.warning, size: iconSize);
@@ -65,7 +67,16 @@ class _TileState extends State<Tile> {
             : Container();
       }
     } else if (widget.model.isFlagged) {
-      child = Icon(Icons.flag, color: Colors.red, size: iconSize);
+      if (!widget.model.isMine && widget.isGameOver) {
+        child = Stack(
+          children: <Widget>[
+            Opacity(opacity: 0.5, child: Icon(Icons.warning, size: iconSize)),
+            Icon(Icons.close, size: iconSize + 1.0, color: Colors.red),
+          ],
+        );
+      } else {
+        child = Icon(Icons.flag, color: Colors.red, size: iconSize);
+      }
     } else {
       child = Container();
     }
@@ -76,7 +87,8 @@ class _TileState extends State<Tile> {
     if (widget.model.isExploded) return Colors.red;
 
     bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    bool isLighter = widget.model.isPressed || (_isHovering && !widget.model.isFlagged);
+    bool isLighter =
+        widget.model.isPressed || (_isHovering && !widget.model.isFlagged);
     if (isLighter) return isLightMode ? Colors.grey[300] : Colors.black45;
 
     return isLightMode ? Colors.grey[400] : Colors.black;

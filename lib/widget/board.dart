@@ -60,6 +60,7 @@ class MinesweeperGrid extends StatelessWidget {
           model: model.tiles[x][y],
           onClick: () => model.onPressed(x, y),
           onLongPress: () => model.onFlagged(x, y),
+          isGameOver: model.hasWon || model.hasLost,
         ),
       ),
     ).expand((e) => e).toList();

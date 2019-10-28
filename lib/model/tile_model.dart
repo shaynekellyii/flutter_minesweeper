@@ -5,6 +5,7 @@ class TileModel {
   bool isFlagged;
   bool isMine;
   bool isExploded;
+  
   int adjacentMines;
 
   TileModel({
