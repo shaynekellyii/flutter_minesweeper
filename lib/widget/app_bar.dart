@@ -25,12 +25,7 @@ class MinesweeperAppBar extends StatelessWidget {
           onPressed: () => ControlDialog.show(context),
           title: kControls,
         ),
-        AppBarAction(
-          icon: const Icon(Icons.equalizer),
-          onPressed: () => DifficultyDialog.show(
-              context, (difficulty) => gameModel.difficulty = difficulty),
-          title: kDifficulty,
-        ),
+        DifficultyAction(gameModel: gameModel),
         AppBarAction(
           icon: Icon(
               themeModel.isLight ? Icons.brightness_3 : Icons.brightness_5),
@@ -122,4 +117,69 @@ class AppBarAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       isMobile(context) ? _buildMobileWidget() : _buildDesktopWidget();
+}
+
+class DifficultyAction extends StatelessWidget {
+  const DifficultyAction({
+    Key key,
+    @required this.gameModel,
+  }) : super(key: key);
+
+  final GameModel gameModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final emptyCustomDifficulty = DifficultyModel.empty();
+
+    return PopupMenuButton<DifficultyModel>(
+      child: isMobile(context) ? _buildMobileWidget() : _buildDesktopWidget(),
+      tooltip: kDifficulty,
+      onSelected: (difficulty) => _onDifficultySelected(difficulty, context),
+      itemBuilder: (BuildContext context) => [
+        ...DifficultyModel.values
+            .map<PopupMenuItem<DifficultyModel>>(
+                (diff) => PopupMenuItem<DifficultyModel>(
+                      value: diff,
+                      child: Text(diff.name),
+                    ))
+            .toList(),
+        PopupMenuItem<DifficultyModel>(
+          value: emptyCustomDifficulty,
+          child: Text(emptyCustomDifficulty.name),
+        ),
+      ],
+    );
+  }
+
+  void _onDifficultySelected(DifficultyModel difficulty, BuildContext context) {
+    if (gameModel.difficulty == difficulty) {
+      final snackbar = ThemedSnackbar(
+        title: 'You are already playing in ${difficulty.name} mode',
+      ) as SnackBar;
+      Scaffold.of(context).showSnackBar(snackbar);
+    } else if (gameModel.difficulty.level == 3) {
+      // TODO: custom difficulty
+    } else {
+      DifficultyDialog.show(context, () => gameModel.difficulty = difficulty);
+    }
+  }
+
+  Widget _buildMobileWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Icon(Icons.equalizer),
+    );
+  }
+
+  Widget _buildDesktopWidget() {
+    return Row(
+      children: <Widget>[
+        Icon(Icons.equalizer),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: AppBarActionText(kDifficulty),
+        ),
+      ],
+    );
+  }
 }

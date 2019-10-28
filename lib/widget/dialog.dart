@@ -35,43 +35,39 @@ class ControlDialog extends StatelessWidget {
 class DifficultyDialog extends StatelessWidget {
   const DifficultyDialog({
     Key key,
-    @required this.onDifficultyChanged,
+    @required this.onConfirm,
   }) : super(key: key);
 
-  final Function(DifficultyModel) onDifficultyChanged;
+  final Function() onConfirm;
 
-  static Future<void> show(
-      BuildContext ctx, Function(DifficultyModel) onDifficultyChanged) async {
+  static Future<void> show(BuildContext ctx, Function() onConfirm) async {
     return showDialog<void>(
       context: ctx,
-      builder: (context) =>
-          DifficultyDialog(onDifficultyChanged: onDifficultyChanged),
+      builder: (context) => DifficultyDialog(onConfirm: onConfirm),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(kDifficulty),
+      title: Text(kChangeDifficulty),
       content: SingleChildScrollView(
-        child: ListBody(children: <Widget>[Text(kWillRestart)]),
+        child: ListBody(children: <Widget>[Text(kChangeDifficultyAreYouSure)]),
       ),
       actions: <Widget>[
-        ...DifficultyModel.values.map((difficulty) => FlatButton(
-              child: Text(difficulty.name),
-              onPressed: () => _setDifficulty(context, difficulty),
-            )),
+        FlatButton(
+          child: Text(kConfirm),
+          onPressed: () {
+            onConfirm();
+            Navigator.of(context).pop();
+          },
+        ),
         FlatButton(
           child: Text(kCancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
     );
-  }
-
-  void _setDifficulty(BuildContext context, DifficultyModel difficulty) {
-    onDifficultyChanged(difficulty);
-    Navigator.of(context).pop();
   }
 }
 

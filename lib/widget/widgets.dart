@@ -7,5 +7,5 @@ export 'package:flutter_minesweeper/widget/game_info.dart';
 export 'package:flutter_minesweeper/widget/header.dart';
 export 'package:flutter_minesweeper/widget/provider.dart';
 export 'package:flutter_minesweeper/widget/scaffold.dart';
-export 'package:flutter_minesweeper/widget/theme.dart';
+export 'package:flutter_minesweeper/widget/themed_snackbar.dart';
 export 'package:flutter_minesweeper/widget/tile.dart';
