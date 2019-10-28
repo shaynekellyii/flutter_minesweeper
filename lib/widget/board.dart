@@ -8,15 +8,21 @@ class MinesweeperBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<GameModel>(
-      builder: (context, model, child) => Card(
-        child: Container(
-          width: kMinDesktopTilePixels * model.cols + 16.0,
-          height: kMinDesktopTilePixels * model.rows + 16.0,
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              MinesweeperGrid(model: model),
-            ],
+      builder: (context, model, child) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Card(
+            child: Container(
+              width: kMinDesktopTilePixels * model.cols + 16.0,
+              height: kMinDesktopTilePixels * model.rows + 16.0,
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  MinesweeperGrid(model: model),
+                ],
+              ),
+            ),
           ),
         ),
       ),
