@@ -7,9 +7,11 @@ repository: https://github.com/shaynekellyii/flutter_minesweeper
 environment:
   sdk: ">=2.3.0 <3.0.0"
 
+# Trying to keep the amount of 3rd-party dependencies as small as possible.
 dependencies:
   flutter:
     sdk: flutter
+  pedantic: ^1.8.0
   provider: ^3.1.0+1
 
 dev_dependencies:

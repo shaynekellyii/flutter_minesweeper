@@ -23,7 +23,7 @@ class HighScores extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 kHighScores,
-                style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.title,
               ),
             ),
             HighScoresTable(highScores: highScores),
