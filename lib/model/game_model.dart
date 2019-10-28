@@ -118,7 +118,7 @@ class GameModel with ChangeNotifier {
   void onFlagged(int x, int y) {
     final tile = _tiles[x][y];
 
-    if (_shouldRegenerateMines || tile.isPressed) return;
+    if (_shouldRegenerateMines || tile.isPressed || _hasWon || _hasLost) return;
 
     if (tile.isFlagged) {
       _flagged--;
@@ -129,7 +129,7 @@ class GameModel with ChangeNotifier {
     }
     tile.isFlagged = !tile.isFlagged;
 
-    // Check for winner
+    // Check for winners
     if (_improperlyFlagged == 0 && _flagged == _mines) {
       _endGame(true);
     }
