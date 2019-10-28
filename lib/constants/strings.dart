@@ -33,3 +33,9 @@ const kYouWon = 'You won!  😀👏🏼';
 const kControlsDialogTitle = 'Controls 🕹';
 const kHelpClickTile = '⛏ Click on a tile to reveal what\'s below';
 const kHelpHoldTile = '🚩 Click and hold a tile to flag it';
+
+const kEnterLessThan = 'Please enter less than';
+const kEnterMoreThan = 'Please enter more than';
+const kEnterValidNumber = 'Please enter a valid number';
+const kEnterValue = 'Please enter a value';
+const kTooManyMines = 'Too many mines. Max';
