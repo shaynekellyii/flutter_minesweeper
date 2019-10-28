@@ -60,7 +60,7 @@ class _TileState extends State<Tile> {
     Widget child;
     if (widget.model.isPressed) {
       if (widget.model.isMine) {
-        child = Icon(Icons.warning, size: iconSize);
+        child = Icon(Icons.filter_tilt_shift, size: iconSize);
       } else {
         child = widget.model.adjacentMines > 0
             ? Text('${widget.model.adjacentMines}')
@@ -70,7 +70,10 @@ class _TileState extends State<Tile> {
       if (!widget.model.isMine && widget.isGameOver) {
         child = Stack(
           children: <Widget>[
-            Opacity(opacity: 0.5, child: Icon(Icons.warning, size: iconSize)),
+            Opacity(
+              opacity: 0.5,
+              child: Icon(Icons.filter_tilt_shift, size: iconSize),
+            ),
             Icon(Icons.close, size: iconSize + 1.0, color: Colors.red),
           ],
         );

@@ -26,7 +26,7 @@ class GameInfo extends StatelessWidget {
                     text: '${model.currentTime}',
                   ),
                   GameInfoItem(
-                    icon: Icon(Icons.warning),
+                    icon: Icon(Icons.filter_tilt_shift),
                     text: '${model.minesRemaining}',
                   ),
                 ],
