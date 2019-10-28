@@ -3,29 +3,37 @@ import 'package:flutter_minesweeper/model/models.dart';
 import 'package:provider/provider.dart';
 
 class GameInfo extends StatelessWidget {
-  const GameInfo({Key key}) : super(key: key);
+  const GameInfo({Key key, this.height}) : super(key: key);
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Consumer<GameModel>(
-        builder: (context, model, _) {
-          return Card(
-            child: Column(
-              children: <Widget>[
-                GameInfoItem(
-                  icon: Icon(Icons.timer),
-                  text: '${model.currentTime}',
-                ),
-                GameInfoItem(
-                  icon: Icon(Icons.warning),
-                  text: '${model.minesRemaining}',
-                ),
-              ],
-            ),
-          );
-        },
+    return SizedBox(
+      height: height,
+      child: Padding(
+        padding: height == null
+            ? const EdgeInsets.all(32.0)
+            : const EdgeInsets.only(),
+        child: Consumer<GameModel>(
+          builder: (context, model, _) {
+            return Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GameInfoItem(
+                    icon: Icon(Icons.timer),
+                    text: '${model.currentTime}',
+                  ),
+                  GameInfoItem(
+                    icon: Icon(Icons.warning),
+                    text: '${model.minesRemaining}',
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
