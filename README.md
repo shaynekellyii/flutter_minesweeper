@@ -18,7 +18,7 @@ Straight from Google:
 
 > Warning: As of 1.9, web support is available as a tech preview. As web support hasn’t yet reached alpha, you can expect to experience crashes and missing features.
 
-It seems to be working fairly well though, minus some bugs in the dartlang compiler that I encountered and other build issues.
+It seems to be fairly stable right now though, minus some bugs in the dartlang compiler that I encountered and other build issues.
 
 ## Architecture
 
