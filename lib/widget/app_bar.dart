@@ -20,22 +20,22 @@ class MinesweeperAppBar extends StatelessWidget {
       backgroundColor: _getAppBarColor(context),
       title: Text(_getTitleString()),
       actions: <Widget>[
+        DifficultyAction(gameModel: gameModel),
+        AppBarAction(
+          icon: const Icon(Icons.refresh),
+          onPressed: () => _onRestartPressed(context),
+          title: kRestart,
+        ),
         AppBarAction(
           icon: const Icon(Icons.gamepad),
           onPressed: () => ControlDialog.show(context),
           title: kControls,
         ),
-        DifficultyAction(gameModel: gameModel),
         AppBarAction(
           icon: Icon(
               themeModel.isLight ? Icons.brightness_3 : Icons.brightness_5),
           onPressed: () => themeModel.isLight = !themeModel.isLight,
           title: themeModel.isLight ? kDark : kLight,
-        ),
-        AppBarAction(
-          icon: const Icon(Icons.refresh),
-          onPressed: () => _onRestartPressed(context),
-          title: kRestart,
         ),
       ],
     );
@@ -176,14 +176,17 @@ class DifficultyAction extends StatelessWidget {
   }
 
   Widget _buildDesktopWidget() {
-    return Row(
-      children: <Widget>[
-        Icon(Icons.equalizer),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: AppBarActionText(kDifficulty),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.equalizer),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: AppBarActionText(kDifficulty),
+          ),
+        ],
+      ),
     );
   }
 }
