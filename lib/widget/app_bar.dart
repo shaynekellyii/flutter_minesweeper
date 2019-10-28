@@ -39,12 +39,20 @@ class MinesweeperAppBar extends StatelessWidget {
         ),
         AppBarAction(
           icon: const Icon(Icons.refresh),
-          onPressed: () =>
-              RestartDialog.show(context, () => gameModel.restart()),
+          onPressed: () => _onRestartPressed(context),
           title: kRestart,
         ),
       ],
     );
+  }
+
+  void _onRestartPressed(BuildContext context) {
+    final restart = () => gameModel.restart();
+    if (!(gameModel.hasWon || gameModel.hasLost)) {
+      RestartDialog.show(context, restart);
+    } else {
+      restart();
+    }
   }
 
   Color _getAppBarColor(BuildContext context) {
