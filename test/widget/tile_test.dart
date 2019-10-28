@@ -32,7 +32,7 @@ void main() {
         onClick: () {},
         onLongPress: () {});
     await tester.pumpWidget(MaterialApp(home: Scaffold(body: tile)));
-    expect(find.byIcon(Icons.warning), findsNothing);
+    expect(find.byIcon(Icons.filter_tilt_shift), findsNothing);
 
     final pressedMineTile = Tile(
         model: TileModel(
@@ -44,7 +44,7 @@ void main() {
         onClick: () {},
         onLongPress: () {});
     await tester.pumpWidget(MaterialApp(home: Scaffold(body: pressedMineTile)));
-    expect(find.byIcon(Icons.warning), findsOneWidget);
+    expect(find.byIcon(Icons.filter_tilt_shift), findsOneWidget);
   });
 
   testWidgets('Pressed clear tile shows adjacent mines',
