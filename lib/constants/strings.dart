@@ -2,17 +2,21 @@ const kAppTitle = 'Minesweeper  💣';
 
 const kCancel = 'Cancel';
 const kClose = 'Close';
+const kColumns = 'Columns';
 const kConfirm = 'Confirm';
 const kControls = 'Controls';
 const kDark = 'Dark';
 const kHighScores = 'High scores';
 const kLight = 'Light';
+const kMines = 'Mines';
 const kMinesweeper = 'Minesweeper';
+const kRows = 'Rows';
 const kTime = 'Time';
 
 const kChangeDifficulty = 'Change difficulty';
 const kChangeDifficultyAreYouSure =
     'Are you sure you want to change difficulty? 🤔';
+const kCustomDifficulty = 'Custom difficulty';
 const kDifficulty = 'Difficulty';
 
 const kRestart = 'Restart';

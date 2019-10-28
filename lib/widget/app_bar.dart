@@ -157,8 +157,12 @@ class DifficultyAction extends StatelessWidget {
         title: 'You are already playing in ${difficulty.name} mode',
       ) as SnackBar;
       Scaffold.of(context).showSnackBar(snackbar);
-    } else if (gameModel.difficulty.level == 3) {
-      // TODO: custom difficulty
+    } else if (difficulty.level == 3) {
+      CustomDifficultyDialog.show(context,
+          (String rows, String cols, String mines) {
+        gameModel.difficulty = DifficultyModel.custom(
+            int.parse(cols), int.parse(rows), int.parse(mines));
+      });
     } else {
       DifficultyDialog.show(context, () => gameModel.difficulty = difficulty);
     }
