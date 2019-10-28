@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/constants/constants.dart';
 import 'package:flutter_minesweeper/constants/strings.dart';
 
 class ControlDialog extends StatelessWidget {

@@ -17,5 +17,6 @@ const kMaxRowsCols = 99;
 const kTileBuffer = 8;
 
 const kHighScoreTableWidth = 300.0;
-const kMinDesktopTilePixels = 24.0;
+const kDesktopTilePixels = 24.0;
+const kMobileTilePixels = 32.0;
 const kMobileLayoutThresholdPixels = 948.0;

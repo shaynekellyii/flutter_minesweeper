@@ -3,3 +3,6 @@ import 'package:flutter_minesweeper/constants/constants.dart';
 
 bool isMobile(BuildContext context) =>
     MediaQuery.of(context).size.width < kMobileLayoutThresholdPixels;
+
+double getTilePixelDimension(BuildContext context) =>
+    isMobile(context) ? kMobileTilePixels : kDesktopTilePixels;

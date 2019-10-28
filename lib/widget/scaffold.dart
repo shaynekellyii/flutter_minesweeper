@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/constants/constants.dart';
 import 'package:flutter_minesweeper/model/models.dart';
 import 'package:flutter_minesweeper/util/view_util.dart';
 import 'package:flutter_minesweeper/widget/high_scores.dart';
@@ -72,7 +71,7 @@ class MinesweeperBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   MinesweeperBoard(),
-                  GameInfo(height: kMinDesktopTilePixels * model.rows + 24.0),
+                  GameInfo(height: getTilePixelDimension(context) * model.rows + 24.0),
                 ],
               ),
               Padding(

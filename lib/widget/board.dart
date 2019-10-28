@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_minesweeper/constants/constants.dart';
 import 'package:flutter_minesweeper/model/game_model.dart';
+import 'package:flutter_minesweeper/util/view_util.dart';
 import 'package:flutter_minesweeper/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +14,8 @@ class MinesweeperBoard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Card(
             child: Container(
-              width: kMinDesktopTilePixels * model.cols + 16.0,
-              height: kMinDesktopTilePixels * model.rows + 16.0,
+              width: getTilePixelDimension(context) * model.cols + 16.0,
+              height: getTilePixelDimension(context) * model.rows + 16.0,
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: <Widget>[
@@ -41,8 +41,8 @@ class MinesweeperGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: kMinDesktopTilePixels * model.rows,
-      width: kMinDesktopTilePixels * model.cols,
+      height: getTilePixelDimension(context) * model.rows,
+      width: getTilePixelDimension(context) * model.cols,
       child: GridView.count(
         crossAxisCount: model.cols,
         physics: NeverScrollableScrollPhysics(),
